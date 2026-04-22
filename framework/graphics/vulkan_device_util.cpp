@@ -169,7 +169,8 @@ VulkanDevicePropertyFeatureInfo
 VulkanDeviceUtil::EnableRequiredPhysicalDeviceFeatures(const VulkanInstanceUtilInfo& instance_info,
                                                        const VulkanInstanceTable*    instance_table,
                                                        const VkPhysicalDevice        physical_device,
-                                                       const VkDeviceCreateInfo*     create_info)
+                                                       const VkDeviceCreateInfo*     create_info,
+                                                       const VulkanFeatureEnablePolicy& policy)
 {
     VulkanDevicePropertyFeatureInfo result;
     GFXRECON_ASSERT(create_info != nullptr);
@@ -303,7 +304,11 @@ VulkanDeviceUtil::EnableRequiredPhysicalDeviceFeatures(const VulkanInstanceUtilI
                 descriptorBufferCaptureReplay_ptr      = &desc_buffer_features->descriptorBufferCaptureReplay;
                 descriptorBufferCaptureReplay_original = desc_buffer_features->descriptorBufferCaptureReplay;
 
-                if (desc_buffer_features->descriptorBuffer && !desc_buffer_features->descriptorBufferCaptureReplay)
+                if (!policy.allow_descriptor_buffer_capture_replay)
+                {
+                    desc_buffer_features->descriptorBufferCaptureReplay = VK_FALSE;
+                }
+                else if (desc_buffer_features->descriptorBuffer && !desc_buffer_features->descriptorBufferCaptureReplay)
                 {
                     VkPhysicalDeviceDescriptorBufferFeaturesEXT supported_features{
                         VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_BUFFER_FEATURES_EXT, nullptr
@@ -364,6 +369,11 @@ void VulkanDeviceUtil::RestoreModifiedPhysicalDeviceFeatures()
         (*rayTracingPipelineShaderGroupHandleCaptureReplay_ptr) =
             rayTracingPipelineShaderGroupHandleCaptureReplay_original;
         rayTracingPipelineShaderGroupHandleCaptureReplay_ptr = nullptr;
+    }
+    if (descriptorBufferCaptureReplay_ptr != nullptr)
+    {
+        (*descriptorBufferCaptureReplay_ptr) = descriptorBufferCaptureReplay_original;
+        descriptorBufferCaptureReplay_ptr    = nullptr;
     }
 }
 

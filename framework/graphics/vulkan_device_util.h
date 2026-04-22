@@ -64,6 +64,11 @@ struct VulkanDevicePropertyFeatureInfo
     VkPhysicalDeviceDescriptorBufferPropertiesEXT descriptor_buffer_properties;
 };
 
+struct VulkanFeatureEnablePolicy
+{
+    bool allow_descriptor_buffer_capture_replay{ true };
+};
+
 class VulkanDeviceUtil
 {
   public:
@@ -74,7 +79,8 @@ class VulkanDeviceUtil
     VulkanDevicePropertyFeatureInfo EnableRequiredPhysicalDeviceFeatures(const VulkanInstanceUtilInfo& instance_info,
                                                                          const VulkanInstanceTable*    instance_table,
                                                                          const VkPhysicalDevice        physical_device,
-                                                                         const VkDeviceCreateInfo*     create_info);
+                                                                         const VkDeviceCreateInfo*     create_info,
+                                                                         const VulkanFeatureEnablePolicy& policy = {});
 
     // Restore any incoming values that were modified in EnableRequiredPhysicalDeviceFeatures
     void RestoreModifiedPhysicalDeviceFeatures();

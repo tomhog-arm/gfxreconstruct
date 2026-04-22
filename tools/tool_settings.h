@@ -134,6 +134,7 @@ const char kVirtualSwapchainSkipBlitShortOption[] = "--vssb";
 const char kVirtualSwapchainSkipBlitLongOption[]  = "--virtual-swapchain-skip-blit";
 const char kColorspaceFallback[]                  = "--use-colorspace-fallback";
 const char kOffscreenSwapchainFrameBoundary[]     = "--offscreen-swapchain-frame-boundary";
+const char kDisableDescriptorBufferCaptureReplay[] = "--disable-descriptor-buffer-capture-replay";
 const char kFormatArgument[]                      = "--format";
 const char kIncludeBinariesOption[]               = "--include-binaries";
 const char kExpandFlagsOption[]                   = "--expand-flags";
@@ -1230,6 +1231,11 @@ GetVulkanReplayOptions(const gfxrecon::util::ArgumentParser&           arg_parse
     if (arg_parser.IsOptionSet(kOffscreenSwapchainFrameBoundary))
     {
         replay_options.offscreen_swapchain_frame_boundary = true;
+    }
+
+    if (arg_parser.IsOptionSet(kDisableDescriptorBufferCaptureReplay))
+    {
+        replay_options.disable_descriptor_buffer_capture_replay = true;
     }
 
     if (arg_parser.IsOptionSet(kVirtualSwapchainSkipBlitLongOption) ||

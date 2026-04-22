@@ -107,6 +107,7 @@ struct VulkanReplayOptions : public ReplayOptions
     bool                    omit_pipeline_cache_data{ false };
     bool                    use_colorspace_fallback{ false };
     bool                    offscreen_swapchain_frame_boundary{ false };
+    bool                    disable_descriptor_buffer_capture_replay{ false };
     util::SwapchainOption   swapchain_option{ util::SwapchainOption::kVirtual };
     util::PresentModeOption present_mode_option{ util::PresentModeOption::kCapture };
     bool                    virtual_swapchain_skip_blit{ false };

@@ -32,7 +32,7 @@ const char kOptions[] =
     "screenshot-all,--onhb|--omit-null-hardware-buffers,--qamr|--quit-after-measurement-range,--fmr|--flush-"
     "measurement-range,--flush-inside-measurement-range,--vssb|--virtual-swapchain-skip-blit,--use-captured-swapchain-"
     "indices,--dcp,--discard-cached-psos,--use-colorspace-fallback,--use-cached-psos,--dx12-override-object-names,--"
-    "dx12-ags-inject-markers,--offscreen-swapchain-frame-boundary,--wait-before-present,--dump-resources-before-draw,"
+    "dx12-ags-inject-markers,--offscreen-swapchain-frame-boundary,--disable-descriptor-buffer-capture-replay,--wait-before-present,--dump-resources-before-draw,"
     "--dump-resources-modifiable-state-only,--pbi-all,--preload-measurement-range,--add-new-pipeline-caches,--"
     "screenshot-ignore-FrameBoundaryANDROID,--deduplicate-device,--log-timestamps,--capture";
 const char kArguments[] =
@@ -76,6 +76,7 @@ static void PrintUsage(const char* exe_name)
     GFXRECON_WRITE_CONSOLE("\t\t\t[--use-captured-swapchain-indices]");
     GFXRECON_WRITE_CONSOLE("\t\t\t[--use-colorspace-fallback]");
     GFXRECON_WRITE_CONSOLE("\t\t\t[--offscreen-swapchain-frame-boundary]");
+    GFXRECON_WRITE_CONSOLE("\t\t\t[--disable-descriptor-buffer-capture-replay]");
     GFXRECON_WRITE_CONSOLE("\t\t\t[--mfr|--measurement-frame-range <start-frame>-<end-frame>]");
     GFXRECON_WRITE_CONSOLE("\t\t\t[--measurement-file <file>] [--quit-after-measurement-range]");
     GFXRECON_WRITE_CONSOLE("\t\t\t[--flush-measurement-range]");
@@ -240,6 +241,10 @@ static void PrintUsage(const char* exe_name)
     GFXRECON_WRITE_CONSOLE("  --sync\t\tSynchronize after each queue submission with vkQueueWaitIdle.");
     GFXRECON_WRITE_CONSOLE("  --remove-unsupported\tRemove unsupported extensions and features from instance");
     GFXRECON_WRITE_CONSOLE("                      \tand device creation parameters.");
+    GFXRECON_WRITE_CONSOLE("  --disable-descriptor-buffer-capture-replay");
+    GFXRECON_WRITE_CONSOLE("                      \tPrevent gfxrecon from auto-enabling");
+    GFXRECON_WRITE_CONSOLE("                      \tVkPhysicalDeviceDescriptorBufferFeaturesEXT::");
+    GFXRECON_WRITE_CONSOLE("                      \tdescriptorBufferCaptureReplay during replay.");
     GFXRECON_WRITE_CONSOLE("  -m <mode>\t\tEnable memory translation for replay on GPUs with memory");
     GFXRECON_WRITE_CONSOLE("          \t\ttypes that are not compatible with the capture GPU's");
     GFXRECON_WRITE_CONSOLE("          \t\tmemory types.  Available modes are:");

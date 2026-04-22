@@ -3433,9 +3433,21 @@ void VulkanReplayConsumerBase::ModifyCreateDeviceInfo(
     modified_create_info.enabledExtensionCount   = static_cast<uint32_t>(modified_extensions.size());
     modified_create_info.ppEnabledExtensionNames = modified_extensions.data();
 
+    graphics::VulkanFeatureEnablePolicy feature_enable_policy{};
+    feature_enable_policy.allow_descriptor_buffer_capture_replay =
+        !options_.disable_descriptor_buffer_capture_replay;
+    if (!feature_enable_policy.allow_descriptor_buffer_capture_replay)
+    {
+        GFXRECON_LOG_WARNING("Disabling descriptorBufferCaptureReplay auto-enable for replay device creation.");
+    }
+
     // Enable necessary features
     create_state.property_feature_info = create_state.device_util.EnableRequiredPhysicalDeviceFeatures(
-        physical_device_info->parent_info, instance_table, physical_device, &modified_create_info);
+        physical_device_info->parent_info,
+        instance_table,
+        physical_device,
+        &modified_create_info,
+        feature_enable_policy);
 
     // Abort on/Remove unsupported features
     graphics::feature_util::CheckUnsupportedFeatures(physical_device,
